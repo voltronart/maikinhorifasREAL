@@ -1,0 +1,166 @@
+:root {
+    --primary: #ffcc00; /* Amarelo Maikinho */
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #ffffff;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    text-align: center;
+}
+
+header {
+    padding: 40px 20px;
+    background: linear-gradient(180deg, #252525 0%, #121212 100%);
+}
+
+h1 { color: var(--primary); margin: 0; }
+
+.container { padding: 20px; display: flex; justify-content: center; }
+
+.rifa-card {
+    background: var(--card);
+    border-radius: 15px;
+    overflow: hidden;
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid #333;
+}
+
+#rifa-img { width: 100%; display: block; }
+
+.info { padding: 20px; }
+
+.progress-bar {
+    background: #333;
+    border-radius: 20px;
+    margin: 15px 0;
+}
+
+.progress {
+    background: var(--primary);
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 20px;
+    padding: 5px 0;
+}
+
+.selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 60px;
+    text-align: center;
+    background: #000;
+    color: #fff;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    cursor: pointer;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-buy {
+    width: 90%;
+    padding: 15px;
+    background: #28a745;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.btn-buy:hover { transform: scale(1.05); }
+
+.form-rifa {
+    padding: 20px;
+    text-align: left;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: var(--primary);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    background: #000;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.input-group input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+.link-voltar {
+    display: block;
+    margin-bottom: 20px;
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+}
+#cronometro {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ff4444;
+    margin: 10px 0;
+}
+
+.pix-area {
+    padding: 20px;
+    background: #252525;
+    border-radius: 10px;
+    margin: 15px;
+}
+
+.qr-code {
+    border: 10px solid white;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.pix-copia-cola {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pix-copia-cola input {
+    background: #000;
+    border: 1px dashed var(--primary);
+    padding: 10px;
+    font-size: 12px;
+}
+
+.aviso-confirmacao {
+    font-size: 0.8rem;
+    color: #aaa;
+    padding: 10px;
+}

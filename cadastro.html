@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | MAIKINHO RIFAS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>⚡ MAIKINHO RIFAS</h1>
+        <p>Preencha seus dados para reservar suas cotas</p>
+    </header>
+
+    <main class="container">
+        <section class="rifa-card">
+            <div class="info">
+                <h3 id="resumo-pedido">Você está comprando: <br><span id="display-qtd">0</span> cotas</h3>
+            </div>
+
+            <form id="form-cadastro" class="form-rifa">
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Digite seu nome" required>
+                </div>
+
+                <div class="input-group">
+                    <label>WhatsApp (com DDD)</label>
+                    <input type="tel" id="whatsapp" placeholder="(00) 00000-0000" required>
+                </div>
+
+                <div class="input-group">
+                    <label>CPF (Para conferência do ganhador)</label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00" required>
+                </div>
+
+                <button type="submit" id="btn-finalizar" class="btn-buy">FINALIZAR E PAGAR AGORA</button>
+            </form>
+            <a href="index.html" class="link-voltar">Voltar e alterar quantidade</a>
+        </section>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // CONFIGURAÇÃO DO SEU FIREBASE (Substitua pelos seus dados do console)
+ const firebaseConfig = {
+    apiKey: "AIzaSyA9MnirbbY3IzqAa_eIGCw7juZ_kh53fxU",
+    authDomain: "maikinho-rifas.firebaseapp.com",
+    projectId: "maikinho-rifas",
+    storageBucket: "maikinho-rifas.firebasestorage.app",
+    messagingSenderId: "315657300726",
+    appId: "1:315657300726:web:d6e1cde4a34685bae25ad7",
+    measurementId: "G-RMCHZ439M3"
+  };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Lógica da Página
+        const urlParams = new URLSearchParams(window.location.search);
+        const quantidade = urlParams.get('qtd') || 1;
+        document.getElementById('display-qtd').innerText = quantidade;
+
+        const form = document.getElementById('form-cadastro');
+        const btn = document.getElementById('btn-finalizar');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Desativa o botão para não clicar duas vezes
+            btn.disabled = true;
+            btn.innerText = "PROCESSANDO...";
+
+            const dados = {
+                nome: document.getElementById('nome').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                cpf: document.getElementById('cpf').value,
+                qtd: parseInt(quantidade),
+                status: "pendente",
+                data: serverTimestamp()
+            };
+
+            try {
+                // SALVA NA COLEÇÃO 'pedidos' NO FIREBASE
+                const docRef = await addDoc(collection(db, "pedidos"), dados);
+                console.log("Pedido salvo com ID:", docRef.id);
+                
+                // Redireciona para a página de pagamento levando o ID do pedido
+                window.location.href = `pagamento.html?id=${docRef.id}&qtd=${quantidade}`;
+                
+            } catch (error) {
+                console.error("Erro ao salvar:", error);
+                alert("Erro ao processar pedido. Tente novamente.");
+                btn.disabled = false;
+                btn.innerText = "FINALIZAR E PAGAR AGORA";
+            }
+        });
+    </script>
+</body>
+</html>

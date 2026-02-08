@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAIKINHO RIFAS | Sorte e Confiança</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <style>
+    .navbar {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background: #1e1e1e;
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 2px solid var(--primary);
+    }
+
+    .nav-link {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .nav-link:hover {
+        color: var(--primary);
+    }
+
+    .nav-link i {
+        font-size: 18px;
+    }
+</style>
+
+<nav class="navbar">
+    <a href="index.html" class="nav-link">🏠 INÍCIO</a>
+    <a href="meus-numeros.html" class="nav-link">🔍 MEUS NÚMEROS</a>
+    <a href="https://wa.me/38999197-7700" target="_blank" class="nav-link" style="color: #25D366;">🟢 SUPORTE</a>
+</nav>
+
+<header>
+    <h1>⚡ MAIKINHO RIFAS</h1>
+    <p>A sorte bate à sua porta!</p>
+</header>
+    <main class="container">
+        <section class="rifa-card">
+            <img src="https://via.placeholder.com/400x250" alt="Prêmio" id="rifa-img">
+            <div class="info">
+                <h2>Celta Rebaixado + R$ 2.000 no Bolso</h2>
+                <p class="status">Sorteio dia: 20/05/2026</p>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 65%;">65% Vendido</div>
+                </div>
+                <p class="price">Por apenas: <strong>R$ 0,50</strong></p>
+            </div>
+
+            <div class="selector">
+                <button onclick="alterarQtd(-10)">-10</button>
+                <input type="number" id="qtd" value="50" min="1">
+                <button onclick="alterarQtd(10)">+10</button>
+            </div>
+            
+            <button class="btn-buy" onclick="comprar()">COMPRAR COTAS AGORA</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

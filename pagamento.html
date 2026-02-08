@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento | MAIKINHO RIFAS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>⚡ MAIKINHO RIFAS</h1>
+        <p>Finalize seu pagamento</p>
+    </header>
+
+    <main class="container">
+        <section class="rifa-card">
+            <div id="status-pagamento">
+                <p>Olá, <strong id="nome-cliente">...</strong>!</p>
+                <p>Seu pedido <strong>#<span id="pedido-id">...</span></strong> foi reservado.</p>
+            </div>
+
+            <div class="pix-area">
+                <p>Valor a pagar: <h2 id="valor-total" style="color:var(--primary)">R$ 0,00</h2></p>
+                
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=MaikinhoRifas" alt="QR Code Pix" class="qr-code">
+                
+                <div class="pix-copia-cola">
+                    <input type="text" id="pix-codigo" value="CHAVE-PIX-AQUI" readonly>
+                    <button onclick="copiarPix()" id="btn-copiar">COPIAR PIX</button>
+                </div>
+            </div>
+
+            <p style="font-size: 12px; padding: 10px;">Após pagar, clique no botão abaixo para avisar no WhatsApp:</p>
+            <button class="btn-buy" onclick="avisarWhatsApp()" style="background: #25D366;">JÁ PAGUEI / ENVIAR COMPROVANTE</button>
+        </section>
+    </main>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA9MnirbbY3IzqAa_eIGCw7juZ_kh53fxU",
+        authDomain: "maikinho-rifas.firebaseapp.com",
+        projectId: "maikinho-rifas",
+        storageBucket: "maikinho-rifas.firebasestorage.app",
+        messagingSenderId: "315657300726",
+        appId: "1:315657300726:web:d6e1cde4a34685bae25ad7",
+        measurementId: "G-RMCHZ439M3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const idPedido = urlParams.get('id');
+
+    async function carregarDadosPedido() {
+        if (!idPedido) return;
+
+        const docRef = doc(db, "pedidos", idPedido);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const dados = docSnap.data(); // DEFINIMOS 'DADOS' AQUI PRIMEIRO
+            
+            // 1. Preenche os dados básicos na tela
+            document.getElementById('nome-cliente').innerText = dados.nome;
+            document.getElementById('pedido-id').innerText = idPedido.substring(0,6);
+            document.getElementById('valor-total').innerText = `R$ ${(dados.qtd * 0.50).toFixed(2)}`;
+            
+            // 2. Configura o link do WhatsApp (Lembre de trocar o número abaixo)
+            window.zapLink = `https://wa.me/5511999999999?text=Oi Maikinho, paguei o pedido ${idPedido}. Nome: ${dados.nome}`;
+
+            // 3. Se já estiver PAGO, mostra os números
+            if (dados.status === 'pago') {
+                document.querySelector('.pix-area').style.display = 'none';
+                
+                const divNumeros = document.createElement('div');
+                divNumeros.innerHTML = `
+                    <h3 style="color: #28a745; margin-top:20px;">✅ PAGAMENTO CONFIRMADO!</h3>
+                    <p>Seus números da sorte são:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px;">
+                        ${dados.numeros ? dados.numeros.map(n => `<span style="background: #ffcc00; color: #000; padding: 5px; border-radius: 3px; font-weight: bold;">${n}</span>`).join('') : 'Gerando números...'}
+                    </div>
+                `;
+                document.querySelector('.rifa-card').appendChild(divNumeros);
+            }
+        } else {
+            console.log("Pedido não encontrado!");
+        }
+    }
+
+    // Funções globais para os botões funcionarem
+    window.avisarWhatsApp = () => { window.open(window.zapLink, '_blank'); };
+    window.copiarPix = () => {
+        const input = document.getElementById('pix-codigo');
+        input.select();
+        document.execCommand("copy");
+        alert("Código Pix copiado!");
+    };
+
+    carregarDadosPedido();
+</script>
+</body>
+</html>
